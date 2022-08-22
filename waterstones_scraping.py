@@ -31,6 +31,15 @@ class Scraper:
             a_tag = book_image.find_element(By.TAG_NAME,"a")
             link = a_tag.get_attribute("href")
             self.url_list.append(link)
+    
+    def scrape_text(self) :
+        book_title = self.driver.find_element(By.CLASS_NAME,"book-title").text 
+        book_author = self.driver.find_element(By.CLASS_NAME,"contributors").find_element(By.TAG_NAME,"a").text
+        
+                
+            
+    
+            
             
 if __name__ == '__main__':
     url = "https://www.waterstones.com/category/science-technology-medicine/page/1"
@@ -44,6 +53,9 @@ if __name__ == '__main__':
     for _ in range(2):
         waterstones_scraper.gather_links()
         waterstones_scraper.next_page()
-        
-    print(waterstones_scraper.url_list)
+    for book_url in waterstones_scraper.url_list :
+        waterstones_scraper.go_to(book_url)    
+        waterstones_scraper.scrape_text()
+    driver.quit()    
+    #print(waterstones_scraper.url_list)
         
