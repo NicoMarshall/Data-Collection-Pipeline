@@ -35,8 +35,9 @@ class Scraper:
     def scrape_text(self) :
         book_title = self.driver.find_element(By.CLASS_NAME,"book-title").text 
         book_author = self.driver.find_element(By.CLASS_NAME,"contributors").find_element(By.TAG_NAME,"a").text
-        
-                
+        #book_price = self.driver.find_element(By.CLASS_NAME,"price-rrp").find_element(By.TAG_NAME,"b").text
+        book_price = self.driver.find_element(by=By.XPATH, value='//b[@itemprop="price"]').text
+        print(book_price)       
             
     
             
@@ -50,7 +51,7 @@ if __name__ == '__main__':
     waterstones_scraper = Scraper(driver,url)    
     waterstones_scraper.go_to(url)
     waterstones_scraper.accept_cookies()
-    for _ in range(2):
+    for _ in range(1):
         waterstones_scraper.gather_links()
         waterstones_scraper.next_page()
     for book_url in waterstones_scraper.url_list :
