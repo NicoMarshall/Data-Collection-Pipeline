@@ -35,10 +35,11 @@ class Scraper:
     def scrape_text(self) :
         book_title = self.driver.find_element(By.CLASS_NAME,"book-title").text 
         book_author = self.driver.find_element(By.CLASS_NAME,"contributors").find_element(By.TAG_NAME,"a").text
-        #book_price = self.driver.find_element(By.CLASS_NAME,"price-rrp").find_element(By.TAG_NAME,"b").text
         book_price = self.driver.find_element(by=By.XPATH, value='//b[@itemprop="price"]').text
-        print(book_price)       
-            
+        book_description_1 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[1]').get_attribute("textContent")
+        book_description_2 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[2]').get_attribute("textContent")
+        book_description = book_description_1 + book_description_2
+        print(book_description)    
     
             
             
@@ -58,5 +59,5 @@ if __name__ == '__main__':
         waterstones_scraper.go_to(book_url)    
         waterstones_scraper.scrape_text()
     driver.quit()    
-    #print(waterstones_scraper.url_list)
+    
         
