@@ -20,7 +20,7 @@ class Scraper:
     
     def accept_cookies(self) :
         time.sleep(4)
-        accept_cookies_button = driver.find_element(by=By.XPATH, value='//*[@id="onetrust-accept-btn-handler"]')
+        accept_cookies_button = self.driver.find_element(by=By.XPATH, value='//*[@id="onetrust-accept-btn-handler"]')
         accept_cookies_button.click()
   
     def gather_links(self) :
@@ -32,4 +32,18 @@ class Scraper:
             link = a_tag.get_attribute("href")
             self.url_list.append(link)
             
+if __name__ == '__main__':
+    url = "https://www.waterstones.com/category/science-technology-medicine/page/1"
+    options = webdriver.ChromeOptions()
+    options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--ignore-ssl-errors')
+    driver = webdriver.Chrome(options=options)        
+    waterstones_scraper = Scraper(driver,url)    
+    waterstones_scraper.go_to(url)
+    waterstones_scraper.accept_cookies()
+    for _ in range(2):
+        waterstones_scraper.gather_links()
+        waterstones_scraper.next_page()
+        
+    print(waterstones_scraper.url_list)
         
