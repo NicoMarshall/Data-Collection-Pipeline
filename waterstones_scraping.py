@@ -38,9 +38,9 @@ class Scraper:
         book_price = self.driver.find_element(by=By.XPATH, value='//b[@itemprop="price"]').text
         book_description_1 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[1]').get_attribute("textContent")
         book_description_2 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[2]').get_attribute("textContent")
-        book_description = book_description_1 + book_description_2
-        print(book_description)    
-    
+        book_description = book_description_1 +  book_description_2
+        isbn = self.driver.find_element(by=By.XPATH,value ='//span[@itemprop="isbn"]').get_attribute("textContent")
+        print(isbn)
             
             
 if __name__ == '__main__':
