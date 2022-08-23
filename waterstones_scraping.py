@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+import uuid
 
 class Scraper:
     def __init__(self, driver, url) :
@@ -40,7 +41,7 @@ class Scraper:
         book_description_2 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[2]').get_attribute("textContent")
         book_description = book_description_1 +  book_description_2
         isbn = self.driver.find_element(by=By.XPATH,value ='//span[@itemprop="isbn"]').get_attribute("textContent")
-        print(isbn)
+
             
             
 if __name__ == '__main__':
@@ -58,6 +59,7 @@ if __name__ == '__main__':
     for book_url in waterstones_scraper.url_list :
         waterstones_scraper.go_to(book_url)    
         waterstones_scraper.scrape_text()
+        uuid.uuid4()
     driver.quit()    
     
         
