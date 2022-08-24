@@ -9,6 +9,7 @@ class Scraper:
         self.driver = driver
         self.url = url
         self.url_list = []
+        self.book_data = { "0" : 0}
     
     def go_to(self,url)  :
         self.driver.get(url)
@@ -41,8 +42,8 @@ class Scraper:
         book_description_2 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[2]').get_attribute("textContent")
         book_description = book_description_1 +  book_description_2
         isbn = self.driver.find_element(by=By.XPATH,value ='//span[@itemprop="isbn"]').get_attribute("textContent")
-
-            
+        book_dict = {"book title" : book_title, "book_author" : book_author, "book_price" : book_price, "book_description" : book_description, "isbn" : isbn, "uuid" : uuid.uuid4()}
+        self.book_data[f"{isbn}"] = book_dict
             
 if __name__ == '__main__':
     url = "https://www.waterstones.com/category/science-technology-medicine/page/1"
@@ -59,7 +60,8 @@ if __name__ == '__main__':
     for book_url in waterstones_scraper.url_list :
         waterstones_scraper.go_to(book_url)    
         waterstones_scraper.scrape_text()
-        uuid.uuid4()
+        print(waterstones_scraper.book_data)
+ 
     driver.quit()    
     
         
