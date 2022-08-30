@@ -5,6 +5,9 @@ import time
 import uuid
 import json
 import os
+import urllib.request
+from urllib.request import Request, urlopen
+
 try:
     os.mkdir("raw_data")
     print("Directory raw_data created ") 
@@ -48,10 +51,11 @@ class Scraper:
         book_description_1 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[1]').get_attribute("textContent")
         book_description_2 = self.driver.find_element(by=By.XPATH,value ='//div[@itemprop="description"]/p[2]').get_attribute("textContent")
         book_description = book_description_1 +  book_description_2
+        global isbn
         isbn = self.driver.find_element(by=By.XPATH,value ='//span[@itemprop="isbn"]').get_attribute("textContent")
         book_dict = {"book title" : book_title, "book_author" : book_author, "book_price" : book_price, "book_description" : book_description, "isbn" : isbn, "uuid" : str(uuid.uuid4())}
         self.book_data[f"{isbn}"] = book_dict
-        os.chdir("C:/Users/Home\Data Collection Pipeline/Data-Collection-Pipeline/raw_data")
+        os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data")
         try:
             os.mkdir(f"{isbn}")
         except FileExistsError:
@@ -59,8 +63,17 @@ class Scraper:
         os.chdir(f"C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data/{isbn}")
         with open('data.json', 'w') as convert_file:
             convert_file.write(json.dumps(book_dict))
-        os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")   
+        os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
         
+    def scrape_image(self):
+        page_image = self.driver.find_element(By.CLASS_NAME,"book-image-main")
+        image_url = page_image.find_element(by=By.XPATH, value='./img').get_attribute("src") 
+        req = Request(image_url, headers={'User-Agent': 'XYZ/3.0'})
+        image_data = urlopen(req, timeout=10).read()
+        os.chdir(f"C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data/{isbn}")
+        with open('image.jpg', 'wb') as handler:
+            handler.write(image_data)
+        os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
         
         
 if __name__ == '__main__':
@@ -78,6 +91,7 @@ if __name__ == '__main__':
     for book_url in waterstones_scraper.url_list :
         waterstones_scraper.go_to(book_url)    
         waterstones_scraper.scrape_text()
+        waterstones_scraper.scrape_image()
         
  
     driver.quit()    
