@@ -8,9 +8,9 @@ The class was initialised using Selenium WebDriver as an API with Google Chrome.
 
 # Milestone 2
 Data scraping methods created; scrape_text() and scrape_image(). For a given book url generated in milestone 1, scrape_text naviagtes to the page and collects
-title, author, price, brief description and isbn into a dictionary. Scrape_image further scrapes a jpg image of the book front cover. All of this data is stored locally, using isbn number to uniquely identify each book.
+title, author, price, brief description and isbn into a dictionary. Scrape_image further scrapes a jpg image of the book front cover. All of this data is stored locally, using isbn number to uniquely identify each book. The code for scrape_text is shown below:
 
-///
+```
 
  def scrape_text(self) :
         book_title = self.driver.find_element(By.CLASS_NAME,"book-title").text 
@@ -33,5 +33,5 @@ title, author, price, brief description and isbn into a dictionary. Scrape_image
             convert_file.write(json.dumps(book_dict))
         os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
         
-///
+```
 
