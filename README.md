@@ -34,4 +34,9 @@ title, author, price, brief description and isbn into a dictionary. Scrape_image
         os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
         
 ```
+# Milestone 3
+Unit tests created for all the main methods used in the scraper class. These were stored in the test_scraper.py file, which when run will run all the tests within it. 
+scrape_text and scrape_image are tested by running on them on an example book ("A Brief History of Time") and checking that the right data is collected and stored.
+gather_links is tested by checking that after running, the list of url's is at least 5 long.
+create_data_directory is checked simply by seeing if the folder "raw data" exists.
 
