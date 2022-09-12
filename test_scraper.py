@@ -32,7 +32,6 @@ class ScraperTestCase(unittest.TestCase):
         
     def test_scrape_text_and_image(self):
         self.scraper.go_to("https://www.waterstones.com/book/a-brief-history-of-time/stephen-hawking/9780857501004")
-        self.scraper.accept_cookies()
         self.scraper.scrape_text()
         self.scraper.scrape_image()    
         book_dictionary = self.scraper.book_data[f"{9780857501004}"]
@@ -45,4 +44,10 @@ class ScraperTestCase(unittest.TestCase):
         self.assertTrue(os.path.exists("raw_data/9780857501004/image.jpg"))
     
     
+tester = ScraperTestCase()    
+tester.setUp()  
+tester.test_data_directory_exists()
+tester.test_gather_links()
+tester.test_scrape_text_and_image()
+
         
