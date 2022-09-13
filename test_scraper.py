@@ -44,10 +44,7 @@ class ScraperTestCase(unittest.TestCase):
         self.assertTrue(os.path.exists("raw_data/9780857501004/image.jpg"))
     
     
-tester = ScraperTestCase()    
-tester.setUp()  
-tester.test_data_directory_exists()
-tester.test_gather_links()
-tester.test_scrape_text_and_image()
 
-        
+unittest.main(argv=[''], verbosity=3, exit=False)
+    
+    
