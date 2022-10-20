@@ -51,12 +51,12 @@ class Scraper:
     def next_page(self) :
         
         """
-        Finds the "next page" button and clicks it.
+        Finds the "next page" url and navigates to it
         
         """
         time.sleep(4)
-        next_button = self.driver.find_element(By.CLASS_NAME,"next")
-        next_button.click()    
+        next_page = self.driver.find_element(By.CLASS_NAME,"next").get_attribute("href")
+        self.driver.get(next_page)
     
     def accept_cookies(self) :
         """
@@ -127,11 +127,19 @@ if __name__ == '__main__':
     options = webdriver.ChromeOptions()
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--ignore-ssl-errors')
+    options.add_argument('--headless')
+    options.add_argument('--window-size=1920,1080')
+    options.add_argument("--no-sandbox")
+    options.add_argument ("--start-maximized")
+    options.add_argument ("--disable-gpu")
+    options.add_argument ("--disable-extensions")
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36'
+    options.add_argument('user-agent={0}'.format(user_agent))
     driver = webdriver.Chrome(options=options)        
     waterstones_scraper = Scraper(driver,url)
     waterstones_scraper.create_data_directory()    
     waterstones_scraper.go_to(url)
-    waterstones_scraper.accept_cookies()
+    #waterstones_scraper.accept_cookies() #not needed in headless mode
     for _ in range(1):
         waterstones_scraper.gather_links()
         waterstones_scraper.next_page()
