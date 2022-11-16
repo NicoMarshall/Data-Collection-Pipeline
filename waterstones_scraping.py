@@ -35,7 +35,7 @@ class Scraper:
         """
         try:
             os.mkdir("raw_data")
-            print("Directory raw_data created ") 
+            print("Directory raw_data created")
         except FileExistsError:
             print("Directory raw_data already exists")
             
@@ -96,15 +96,17 @@ class Scraper:
         isbn = self.driver.find_element(by=By.XPATH,value ='//span[@itemprop="isbn"]').get_attribute("textContent")
         book_dict = {"book_title" : book_title, "book_author" : book_author, "book_price" : book_price, "book_description" : book_description, "isbn" : isbn, "uuid" : str(uuid.uuid4())}
         self.book_data[f"{isbn}"] = book_dict
-        os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data")
+        #os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data")
         try:
             os.mkdir(f"{isbn}")
         except FileExistsError:
             pass
-        os.chdir(f"C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data/{isbn}")
+        #os.chdir(f"C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data/{isbn}")
+        os.chdir(f"{isbn}")
         with open('data.json', 'w') as convert_file:
             convert_file.write(json.dumps(book_dict))
-        os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
+        #os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
+        
         
     def scrape_image(self):
         """
@@ -116,10 +118,11 @@ class Scraper:
         image_url = page_image.find_element(by=By.XPATH, value='./img').get_attribute("src") 
         req = Request(image_url, headers={'User-Agent': 'XYZ/3.0'})
         image_data = urlopen(req, timeout=10).read()
-        os.chdir(f"C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data/{isbn}")
+        #os.chdir(f"C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline/raw_data/{isbn}")
         with open('image.jpg', 'wb') as handler:
             handler.write(image_data)
-        os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
+        #os.chdir("C:/Users/Home/Data Collection Pipeline/Data-Collection-Pipeline")  
+        os.chdir("/raw_data")
         
         
 if __name__ == '__main__':
@@ -133,11 +136,13 @@ if __name__ == '__main__':
     options.add_argument ("--start-maximized")
     options.add_argument ("--disable-gpu")
     options.add_argument ("--disable-extensions")
+    options.add_argument("--disable-dev-shm-usage")
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36'
     options.add_argument('user-agent={0}'.format(user_agent))
     driver = webdriver.Chrome(options=options)        
     waterstones_scraper = Scraper(driver,url)
-    waterstones_scraper.create_data_directory()    
+    waterstones_scraper.create_data_directory()
+    os.chdir("raw_data")    
     waterstones_scraper.go_to(url)
     #waterstones_scraper.accept_cookies() #not needed in headless mode
     for _ in range(1):
@@ -147,6 +152,7 @@ if __name__ == '__main__':
         waterstones_scraper.go_to(book_url)    
         waterstones_scraper.scrape_text()
         waterstones_scraper.scrape_image()
+        
         
  
     driver.quit()    
