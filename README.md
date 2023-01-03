@@ -40,3 +40,8 @@ scrape_text and scrape_image are tested by running on them on an example book ("
 gather_links is tested by checking that after running, the list of url's is at least 5 long.
 create_data_directory is checked simply by seeing if the folder "raw data" exists.
 
+# Milestone 4
+The scraper was containerised using a DockerFile, meaning it can be deployed virtually on any machine and the data scraped stored in a volume. Additionally, a CI/CID pipeline was setup using GitHub 
+actions that automatically builds the Docker Image and deploys it to DockerHub upon a push request to main branch.
+
+
